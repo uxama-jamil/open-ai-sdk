@@ -11,7 +11,7 @@ dependencies = [
 [project.scripts]
 testprj = "testprj:main"
 llm= "testprj.simpleAgent:runAgent"
-tool = "testprj.toolCalling:runAgent"
+tool = "testprj.toolCalling:testAsync"
 
 [build-system]
 requires = ["hatchling"]
