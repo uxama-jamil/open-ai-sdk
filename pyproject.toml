@@ -1,0 +1,18 @@
+[project]
+name = "testprj"
+version = "0.1.0"
+description = "Add your description here"
+readme = "README.md"
+requires-python = ">=3.11"
+dependencies = [
+    "openai-agents>=0.0.17",
+]
+
+[project.scripts]
+testprj = "testprj:main"
+llm= "testprj.simpleAgent:runAgent"
+tool = "testprj.toolCalling:runAgent"
+
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
