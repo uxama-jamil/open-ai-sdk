@@ -3,6 +3,9 @@ import asyncio
 from agents import Agent, ModelSettings, Runner, AsyncOpenAI, OpenAIChatCompletionsModel, function_tool, set_tracing_disabled
 from agents.agent import StopAtTools
 
+import agentops
+agentops.init("e747adf5-1772-44bc-8dcc-87bb27ccc40d")
+
 # Set up the external language model provider (Google's Gemini, using OpenAI-compatible API)
 externalProvider = AsyncOpenAI(
     api_key="AIzaSyBc9lTEos9wzNpVcprceC9I1YfuQvNHmBk",  # API key for Gemini
@@ -119,15 +122,18 @@ def  runAgentAsyncWithoutllmVerification ():
         instructions="You are a helpful assistant",
         model=model,  # Uses the Gemini model set above
         tools=[subtract,add,multiply,divide], # This is the tool that will be used to get the temperature of the city
-        tool_use_behavior='stop_on_first_tool', #llm will not verify the tool call result and will stop at the first tool call
+        # tool_use_behavior='stop_on_first_tool', #llm will not verify the tool call result and will stop at the first tool call
+        model_settings=ModelSettings(
+            tool_choice="required",
+        )
         
     )
 
     # Run the agent synchronously with a given input
     response = asyncio.run(Runner.run(
-        max_turns=2,
+        # max_turns=2,
         starting_agent=agent,
-        input="what is 2-1?"  # Input message to the assistant
+        input="what is 2+2*300-1?"  # Input message to the assistant
     ))
     print('tool_call_count',tool_call_count)
     # running asyncagent
