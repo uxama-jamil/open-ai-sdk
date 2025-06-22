@@ -97,7 +97,7 @@ agent_f_1 = Agent(
 
 agent_f_2 = Agent(
     name="Main Agent",
-    instructions="You are a main agent. You are given a question and you need to answer it based on the history or math.",
+    instructions="You are a main agent. You are given a question and you need to answer it based on the astronaut or science or sindhi or history or math.",
     model=model,
     handoffs = [astronaunt_tutor_agent,science_tutor_agent,sindhi_tutor_agent]
 )
