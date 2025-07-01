@@ -1,10 +1,29 @@
-# Python-generated files
-__pycache__/
-*.py[oc]
-build/
-dist/
-wheels/
-*.egg-info
+# Chainlit config & cache
+.chainlit/
+chainlit.db
 
-# Virtual environments
-.venv
+# VSCode settings (optional)
+.vscode/
+
+# Python artifacts
+__pycache__/
+*.py[cod]
+*.pyo
+*.pyd
+*.pyc
+
+# Environment
+.env
+.venv/
+env/
+venv/
+
+# OS-specific
+.DS_Store
+Thumbs.db
+
+# Jupyter (if you're using it alongside)
+.ipynb_checkpoints/
+
+# Logs
+*.log
