@@ -1,10 +1,13 @@
 # Import core components from the openai-agents framework
 from dataclasses import dataclass
 from agents import Agent, ModelSettings, RunContextWrapper, Runner, AsyncOpenAI, OpenAIChatCompletionsModel, function_tool, set_tracing_disabled
+from dotenv import load_dotenv
+import os
+load_dotenv()
 
 # Set up the external language model provider (Google's Gemini, using OpenAI-compatible API)
 externalProvider = AsyncOpenAI(
-    api_key="AIzaSyB8CcLUoNkWeNvcOGKxFgGjhUEW4eoCveE",  # API key for Gemini
+    api_key=os.getenv("GEMINI_API_KEY"),  # API key for Gemini
     base_url="https://generativelanguage.googleapis.com/v1beta/openai/",  # Gemini-compatible endpoint
 )
 

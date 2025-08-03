@@ -2099,6 +2099,7 @@ dependencies = [
     { name = "agentops" },
     { name = "chainlit" },
     { name = "openai-agents" },
+    { name = "python-dotenv" },
 ]
 
 [package.metadata]
@@ -2106,6 +2107,7 @@ requires-dist = [
     { name = "agentops", specifier = ">=0.4.16" },
     { name = "chainlit", specifier = ">=2.5.5" },
     { name = "openai-agents", specifier = ">=0.0.17" },
+    { name = "python-dotenv", specifier = ">=1.1.0" },
 ]
 
 [[package]]
