@@ -60,6 +60,19 @@ class Weather(BaseModel):
 
 @function_tool
 def get_weather(city: str) -> Weather:
+    """
+    Get the current weather in the specified city.
+
+    Args:
+        city (str): Name of the city to fetch weather for.
+
+    Returns:
+        Weather: An object containing city name, temperature range, and conditions.
+
+    Example:
+        Input: "Karachi"
+        Output: Weather(city="Karachi", temperature_range="14-20C", conditions="Sunny with wind")
+    """
     print("[debug] get_weather called")
     return Weather(city=city, temperature_range="14-20C", conditions="Sunny with wind")
 
