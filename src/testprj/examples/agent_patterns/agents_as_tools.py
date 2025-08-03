@@ -44,6 +44,7 @@ class CustomAgentHook(AgentHooks):
     name : name of the agent
     Instructions : what the agent should do
     handoff_description: it is only used when You are turning an Agent into a tool using .as_tool()
+                        and front agent or orchestrator agent uses this to understand the capabilities of that tool-agent
     model: (Gemini) 
 """
 spanish_agent = Agent(
