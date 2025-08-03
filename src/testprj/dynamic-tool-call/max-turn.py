@@ -67,12 +67,12 @@ def runAgent():
    
     # Run the agent synchronously with a given input
     while True:
-        input = input("Enter your message: ")
-        if input == "exit" or input == "":
+        iinput = input("Enter your message: ")
+        if iinput == "exit" or iinput == "":
             break
         response = Runner.run_sync(
             starting_agent=agent,
-            input=input,  # Input message to the assistant
+            input=iinput,  # Input message to the assistant
             max_turns=2 #max_turns is the maximum number of turns the agent will take to complete the task
                         #llm receive a input either from user or from tool call is count as one turn
         )
