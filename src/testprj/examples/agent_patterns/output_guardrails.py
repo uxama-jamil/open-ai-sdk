@@ -32,11 +32,11 @@ This example shows how to use output guardrails.
 
 Output guardrails are checks that run on the final output of an agent.
 They can be used to do things like:
-- Check if the output contains sensitive data
+- Check if the output contains game or sports related information
 - Check if the output is a valid response to the user's message
 
 In this example, we'll use a (contrived) example where we check if the agent's response contains
-a phone number.
+game or sports related information.
 """
 
 
@@ -45,21 +45,18 @@ class MessageOutput(BaseModel):
     reasoning: str = Field(description="Thoughts on how to respond to the user's message")
     response: str = Field(description="The response to the user's message")
     user_name: str | None = Field(description="The name of the user who sent the message, if known")
+    is_game_or_sports_related: bool = Field(description="Whether the response is game or sports related")
+    
 
 
 @output_guardrail
 async def sensitive_data_check(
     context: RunContextWrapper, agent: Agent, output: MessageOutput
 ) -> GuardrailFunctionOutput:
-    phone_number_in_response = "650" in output.response
-    phone_number_in_reasoning = "650" in output.reasoning
-
+    print(f"sensitive_data_check result is {output}  ")
     return GuardrailFunctionOutput(
-        output_info={ #guardrail output if it trips
-            "phone_number_in_response": phone_number_in_response,
-            "phone_number_in_reasoning": phone_number_in_reasoning,
-        },
-        tripwire_triggered=phone_number_in_response or phone_number_in_reasoning,
+        output_info=output, #guardrail output if it trips
+        tripwire_triggered=output.is_game_or_sports_related,
     )
 
 
@@ -76,18 +73,21 @@ async def main():
     # This should be ok
     await Runner.run(agent, "What's the capital of California?")
     print("First message passed")
+    while True:
+        user_input = input("Enter a message: ")
+        if user_input.lower() == "exit":
+            break
+        # This should trip the guardrail
+        try:
+            result = await Runner.run(
+                agent, user_input
+            )
+            print(
+                f"Guardrail didn't trip - this is unexpected. Output: {json.dumps(result.final_output.model_dump(), indent=2)}"
+            )
 
-    # This should trip the guardrail
-    try:
-        result = await Runner.run(
-            agent, "My phone number is 666-123-4567. Where do you think I live?"
-        )
-        print(
-            f"Guardrail didn't trip - this is unexpected. Output: {json.dumps(result.final_output.model_dump(), indent=2)}"
-        )
-
-    except OutputGuardrailTripwireTriggered as e:
-        print(f"Guardrail tripped. Info: {e.guardrail_result.output.output_info}")
+        except OutputGuardrailTripwireTriggered as e:
+            print(f"Guardrail tripped. Info: {e.guardrail_result.output.output_info}")
 
 
 if __name__ == "__main__":
