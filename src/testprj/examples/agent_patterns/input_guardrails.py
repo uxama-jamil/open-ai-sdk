@@ -35,12 +35,12 @@ They can be used to do things like:
 - Check that input messages don't violate any policies
 - Take over control of the agent's execution if an unexpected input is detected
 
-In this example, we'll setup an input guardrail that trips if the user is asking to do math homework.
+In this example, we'll setup an input guardrail that trips if the user input is containing any sensitive or abusive information.
 If the guardrail trips, we'll respond with a refusal message.
 """
 
 
-### 1. An agent-based guardrail that is triggered if the user is asking to do math homework
+### 1. An agent-based guardrail that is triggered if the user input is containing any sensitive or abusive information
 class SensitiveInput(BaseModel):
     reasoning: str
     is_sensitive_input: bool
@@ -66,7 +66,7 @@ async def sensitive_input_guardrail(
     final_output = result.final_output_as(SensitiveInput)
     print(f"sensitive_input_guardrail result is {final_output} ")
     return GuardrailFunctionOutput(
-        output_info=final_output,
+        output_info=final_output, #guardrail output if it trips
         tripwire_triggered=final_output.is_sensitive_input,
     )
 
