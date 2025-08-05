@@ -97,7 +97,8 @@ async def main():
             result = await Runner.run(agent, input_data)
             print(result.final_output)
             # If the guardrail didn't trigger, we use the result as the input for the next run
-            input_data = result.to_input_list()
+            input_data = result.to_input_list() #to_input_list() is used to convert the output to a list of input items containing input items and output items in the list
+            print(f"input_data is {input_data} ")
         except InputGuardrailTripwireTriggered:
             # If the guardrail triggered, we instead add a refusal message to the input
             message = "Sorry, I can't help you b/c your input is containing sensitive or abusive information."
@@ -110,7 +111,7 @@ async def main():
             )
 
     # Sample run:
-    # Enter a message: What's the capital of California?
+    # Enter a message: 
     # The capital of California is Sacramento.
     # Enter a message: Can you help me solve for x: 2x + 5 = 11
     # Sorry, I can't help you with your math homework.
