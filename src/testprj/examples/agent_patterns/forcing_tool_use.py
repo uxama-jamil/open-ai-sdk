@@ -11,13 +11,13 @@ load_dotenv()
 
 # Set up the external language model provider (Google's Gemini, using OpenAI-compatible API)
 externalProvider = AsyncOpenAI(
-    api_key=os.getenv("GEMINI_API_KEY"),  # API key for Gemini
-    base_url="https://generativelanguage.googleapis.com/v1beta/openai/",  # Gemini-compatible endpoint
+    api_key="ollama",  # dummy value to satisfy SDK
+    base_url="http://localhost:11434/v1"  # local Ollama endpoint
 )
 
 # Create a chat completions model using the Gemini model via the OpenAI API interface
 model = OpenAIChatCompletionsModel(
-    model="gemini-1.5-flash",  # Name of the Gemini model to use
+    model="llama3.2:latest",  # Name of the llama model to use from ollama
     openai_client=externalProvider  # The provider configured above
 )
 
