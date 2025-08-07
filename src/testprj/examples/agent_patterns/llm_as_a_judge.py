@@ -78,22 +78,32 @@ async def main() -> None:
         )
         
         """
-    4️⃣ Prepare full input history for the next agent run
-         `to_input_list()` returns the full conversation so far:
-            - The original user input
-            - Plus the assistant's new reply
-            It’s useful to maintain continuity in multi-step workflows
-            Example result:
-         input_items = [
-            {"role": "user", "content": "Tell me a sci-fi story"},
-            {"role": "assistant", "content": "In a dystopian future, ..."}
+        4️⃣ 1. input_items = story_outline_result.to_input_list()
+        Purpose:
+        to_input_list() converts the entire conversation history (including the latest agent response) 
+        into a format that can be fed to the next agent in the pipeline.
+        Why We Need It:
+        In a multi-agent conversation, each agent needs to see the full context of what happened before. 
+        This method ensures conversation continuity.
+        example: The result contains both input and output
+        story_outline_result = {
+            "input_history": [{"content": "Write a story about a dragon", "role": "user"}],
+            "new_response": [{"content": "Here's a story outline: A young dragon learns to fly...", "role": "assistant"}]
+        }
+
+        # to_input_list() combines everything into conversation format
+        input_items = story_outline_result.to_input_list()
+        # Result:
+        input_items = [
+            {"content": "Write a story about a dragon", "role": "user"},
+            {"content": "Here's a story outline: A young dragon learns to fly...", "role": "assistant"}
         ]
         """
 
         input_items = story_outline_result.to_input_list()
         """
-        2️⃣ Access the new response(s) the agent just generated in this run
-         This will only include assistant responses, not the whole conversation
+        2️⃣ Purpose of new_items
+        new_items extracts only the latest responses from the agent (not the entire conversation history).
          Example output:
          story_outline_result.new_items = [
             {
@@ -104,6 +114,32 @@ async def main() -> None:
         💡 Note: This does NOT include the user's original input — just the agent's new reply
         """
         new_responses = story_outline_result.new_items
+        
+        """
+        Purpose of ItemHelpers.text_message_outputs()
+        This helper function converts complex agent response objects into simple, readable text strings.
+        
+        #example
+                # story_outline_result.new_items contains structured data like this:
+        new_items = [
+            {
+                "type": "message",
+                "role": "assistant", 
+                "content": [
+                    {
+                        "type": "text",
+                        "text": "Here's your story outline:\n\n1. Introduction: A young dragon named Ember lives in a mountain cave..."
+                    }
+                ],
+                "metadata": {...},
+                "timestamp": "2024-01-15T10:30:00Z"
+            }
+        ]
+
+        # ItemHelpers.text_message_outputs() extracts just the text content
+        text_only_response = ItemHelpers.text_message_outputs(new_items)
+        # Result: "Here's your story outline:\n\n1. Introduction: A young dragon named Ember lives in a mountain cave..."
+        """
         text_only_response = ItemHelpers.text_message_outputs(new_responses)
         latest_outline = text_only_response
         print("Story outline generated")
