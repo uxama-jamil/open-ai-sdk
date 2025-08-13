@@ -7,7 +7,7 @@ requires-python = ">=3.11"
 dependencies = [
     "agentops>=0.4.16",
     "chainlit>=2.5.5",
-    "openai-agents>=0.0.17",
+    "openai-agents>=0.2.6",
     "python-dotenv>=1.1.0",
 ]
 
